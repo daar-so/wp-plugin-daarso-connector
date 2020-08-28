@@ -67,7 +67,7 @@ class DaarsoPlugin
 			'updraftplus_restored_wpcore'
 		];
 		foreach ($actions as $action) {
-			if (in_array($action, $actions)) {
+			if (in_array($action, $actions_noIds)) {
 				add_action($action, [$this, 'purge_noId'], 99);
 			} else {
 				add_action($action, [$this, 'purgePost'], 10, 2);
@@ -285,7 +285,7 @@ class DaarsoPlugin
 			}
 		}
 		
-		$taxonomies = get_post_taxononies($postId);
+		$taxonomies = get_post_taxonomies($postId);
 		if ($taxonomies) {
 			foreach ($taxonomies as $taxonomy) {
 				$features = (array)get_taxonomy($taxonomy);
