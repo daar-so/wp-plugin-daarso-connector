@@ -2,7 +2,7 @@
 
 /**
 * Plugin name: Daar[so] management plugin
-* Version: 1.3.1
+* Version: 1.3.3
 **/
 
 namespace Daarso;
@@ -252,7 +252,7 @@ class DaarsoPlugin
 		$validPostStatus = ['publish', 'private', 'trash'];
 		$thisPostStatus = get_post_status($postId);
 		$invalidPostType = ['nav_menu_item', 'revision'];
-		$noarchivePostType = ['post', 'page'];
+		$noArchivePostType = ['post', 'page'];
 		$thisPostType = get_post_type($postId);
 		$urlList = [];
 		if (get_permalink($postId) === false || !in_array($thisPostStatus, $validPostStatus, true) || in_array($thisPostType, $invalidPostType, true)) {
