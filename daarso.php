@@ -1,16 +1,38 @@
 <?php
 /**
-* Plugin name: Daar[so] management plugin
+* Plugin name: Daar-so.nl Connector
 * Description: Een verplichte plugin voor websites die worden gehost op het Daar-so hosting platform.
 * Version: 2.4.5
-* Author: Daar-so
+* Author: daar-so.nl
 * Author URI: https://daar-so.nl
 * License: Proprietary
 **/
 
 namespace Daarso;
 
+use Daarso;
+use Daarso_Activator;
+use Daarso_Deactivator;
+use WP_CLI;
+use function is_user_logged_in;
+
 require_once(ABSPATH . 'wp-admin/includes/update.php');
+
+function daarso_access_guard():void  {
+	if ( ! defined( 'ABSPATH' ) ) {
+		exit;
+	}
+}
+
+daarso_access_guard();
+// If this file is called directly, abort.
+
+/**
+ * Currently plugin version.
+ * Start at version 1.0.0 and use SemVer - https://semver.org
+ * Rename this for your plugin and update it as you release new versions.
+ */
+define( 'DAARSO_CONNECTOR_VERSION', '2.4.5' );
 
 final class DaarsoOptions
 {
@@ -36,10 +58,19 @@ final class DaarsoApiMessageCoderV0
     {
         if (openssl_public_decrypt(base64_decode($codedMessage), $decodedMessage, $this->openSslKey)) {
             $resultArray = json_decode($decodedMessage, true);
-            if (isset($resultArray['wpmanagerGuidId'], $resultArray['websiteGuidId'], $resultArray['action'], $resultArray['data']) && ($this->originGuid === $resultArray['wpmanagerGuidId']) && ($this->targetGuid === $resultArray['websiteGuidId'])) {
+            if (isset(
+                $resultArray['wpmanagerGuidId'],
+                    $resultArray['websiteGuidId'],
+                    $resultArray['action'],
+                    $resultArray['data']
+                )
+                && ($this->originGuid === $resultArray['wpmanagerGuidId'])
+                && ($this->targetGuid === $resultArray['websiteGuidId'])) {
+
                 return ['action' => $resultArray['action'], 'data' => $resultArray['data']];
             }
         }
+
         return false;
     }
 
@@ -50,9 +81,11 @@ final class DaarsoApiMessageCoderV0
         $resultArray['message'] = $message;
         $resultArray['success'] = true;
         $resultArray['salt'] = microtime(true);
+
         if (openssl_public_encrypt(json_encode($resultArray), $codedResponse, $this->openSslKey)) {
             return base64_encode($codedResponse);
         }
+
         return false;
     }
 }
@@ -133,12 +166,15 @@ final class DaarsoPluginWPCLI
 {
     public function __construct()
     {
+//        var_dump(defined('WP_CLI'));
+//        var_dump(WP_CLI);
+//        die();
         if (defined('WP_CLI') && WP_CLI) {
-            \WP_CLI::add_command('daarso', __CLASS__);
+            WP_CLI::add_command('Daarso', __CLASS__);
+            var_dump("wpcli aanwezig");
+            die();
         }
     }
-
-    public function hello_world() { }
 
     public function setRequestMessageOrigin($args, $assoc_args)
     {
@@ -177,10 +213,10 @@ final class DaarsoPluginApi
         $protocol_version = isset($_POST['protocol_version']) ? $_POST['protocol_version'] : '0';
         switch ($protocol_version) {
             case '0':
-                $this->messsageCoder = new \Daarso\DaarsoApiMessageCoderV0();
+                $this->messsageCoder = new DaarsoApiMessageCoderV0();
                 break;
             case '1':
-                $this->messsageCoder = new \Daarso\DaarsoApiMessageCoderV1();
+                $this->messsageCoder = new DaarsoApiMessageCoderV1();
                 break;
             default:
                 wp_json_error(['error' => 'Protocol version missmatch.'], 400);
@@ -245,8 +281,9 @@ final class DaarsoPluginApi
         $result = set_transient("daarso_sso_" . $id, $key, 60);
         if (false !== $result) {
             return ['id' => $id, 'key' => $key];
-        };
-        return false;
+        }
+
+	    return false;
     }
 
     private function getUpdateInformation(): array
@@ -279,7 +316,7 @@ final class DaarsoPluginApi
 
     private function enter_from_manager(): void
     {
-        if (!\is_user_logged_in()) {
+        if (! is_user_logged_in()) {
             $users = get_users(['meta_key' => 'daarso_sso', 'meta_value' => 1,]);
             if (!$users) {
                 return;
@@ -648,7 +685,7 @@ class DaarsoTracing
         $date = date_create('now')->format('Y-m-d H:i:s');
 
         $rawMessage = sprintf('%s %s %s', getmypid(), $date, $message) . PHP_EOL;
-        file_put_contents(ABSPATH . 'daarso-plugin-trace.log', $rawMessage, FILE_APPEND);
+        file_put_contents(ABSPATH . 'Daarso-plugin-trace.log', $rawMessage, FILE_APPEND);
     }
 }
 
@@ -701,5 +738,40 @@ function includeRecursively($pattern, $flags = 0)
         includeRecursively($dir . '/' . basename($pattern), $flags);
     }
 }
+var_dump("test");
+//includeRecursively( __DIR__ . '/include/*.php' );
 
-includeRecursively(__DIR__ . '/include/*.php');
+/*  Vanaf hier is het volgens Wordpress-Plugin-Boillerplate */
+includeRecursively( __DIR__ . '/includes/*.php' );
+
+/**
+ * The code that runs during plugin (de)activation.
+ * These actions are documented in includes/daarso-activator.php and includes/daarso-deactivator.php
+ */
+
+register_activation_hook( __FILE__, 'Daarso_Activator::activate' );
+register_deactivation_hook( __FILE__, 'Daarso_Deactivator::deactivate' );
+
+/**
+ * The core plugin class that is used to define internationalization,
+ * admin-specific hooks, and public-facing site hooks.
+ */
+//require plugin_dir_path( __FILE__ ) . 'includes/class-plugin-name.php';
+
+/**
+ * Begins execution of the plugin.
+ *
+ * Since everything within the plugin is registered via hooks,
+ * then kicking off the plugin from this point in the file does
+ * not affect the page life cycle.
+ *
+ * @since    1.0.0
+ */
+function run_plugin_name(): void {
+
+	$plugin = new Daarso();
+	$plugin->run();
+
+}
+
+run_plugin_name();
