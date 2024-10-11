@@ -1,0 +1,24 @@
+{
+    "name": "daarso/daarso-plugin",
+    "description": "Daarso connector",
+    "type": "wordpress-plugin",
+    "license": "private",
+    "authors": [
+        {
+            "name": "daarso.nl"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.10",
+        "wp-coding-standards/wpcs": "^3.1"
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    },
+  "require": {
+    "ext-openssl": "*"
+  }
+}
