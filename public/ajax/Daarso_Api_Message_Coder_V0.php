@@ -11,9 +11,9 @@ final class Daarso_Api_Message_Coder_V0 {
 	private string $openSslKey;
 
 	public function __construct() {
-		$this->originGuid = get_option( daarso_connector_options::REQUEST_MESSAGE_ORIGIN_GUID );
-		$this->targetGuid = get_option( daarso_connector_options::REQUEST_MESSAGE_TARGET_GUID );
-		$this->openSslKey = get_option( daarso_connector_options::REQUEST_MESSAGE_OPENSSL_KEY );
+		$this->originGuid = get_option( daarso_connector_options::REQUEST_CONNECTOR_MESSAGE_ORIGIN_GUID );
+		$this->targetGuid = get_option( daarso_connector_options::REQUEST_CONNECTOR_MESSAGE_TARGET_GUID );
+		$this->openSslKey = get_option( daarso_connector_options::REQUEST_CONNECTOR_MESSAGE_OPENSSL_KEY );
 	}
 
 	public function decode( string $codedMessage ): false|array {

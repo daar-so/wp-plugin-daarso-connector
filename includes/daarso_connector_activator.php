@@ -6,9 +6,13 @@ use WP_User;
 class daarso_connector_activator {
 
 	public static function activate(): void {
-		add_option( daarso_connector_options::REQUEST_MESSAGE_ORIGIN_GUID);
-		add_option( daarso_connector_options::REQUEST_MESSAGE_TARGET_GUID);
-		add_option( daarso_connector_options::REQUEST_MESSAGE_OPENSSL_KEY);
+		$originGuid = get_option( 'daarso_request_message_origin_guid' );
+		$targetGuid = get_option( 'daarso_request_message_target_guid' );
+		$openSslKey = get_option( 'daarso_request_message_openssl_key' );
+
+		add_option( daarso_connector_options::REQUEST_CONNECTOR_MESSAGE_ORIGIN_GUID, ($originGuid !== false)? $originGuid : '');
+		add_option( daarso_connector_options::REQUEST_CONNECTOR_MESSAGE_TARGET_GUID, ($targetGuid !== false)? $targetGuid : '');
+		add_option( daarso_connector_options::REQUEST_CONNECTOR_MESSAGE_OPENSSL_KEY, ($openSslKey !== false)? $openSslKey : '');
 		self::daarso_force_user();
 	}
 
