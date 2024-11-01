@@ -12,7 +12,7 @@ class daarso_connector_updater {
 		$myUpdateChecker = PucFactory::buildUpdateChecker(
 			'https://github.com/daar-so/wp-plugin-daarso-connector',
 			DAARSO_CONNECTOR_ROOT . 'daarso_connector.php',
-			'daarsonl-connector'
+			'daarso-connector'
 		);
 
 		$myUpdateChecker->debugMode = true;
