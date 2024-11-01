@@ -1,22 +1,24 @@
 <?php
 /**
-* Plugin name: Daar-so.nl Connector
-* Description: Een verplichte plugin voor websites die worden gehost op het Daar-so hosting platform.
-* Version: 2.4.5
-* Author: daar-so.nl®
-* Author URI: https://daar-so.nl
-* License: Proprietary
-**/
+ * Plugin Name: Daar-so.nl Connector
+ * Description: Een verplichte plugin voor websites die worden gehost op het Daar-so hosting platform.
+ * Version: 0.1.0
+ * Requires at least: 6.0
+ * Requires PHP: 8.0
+ * Author: daar-so.nl®
+ * Author URI: https://daar-so.nl
+ * License: Proprietary
+ **/
 
 /**
  * De opzet is volgens: Wordpress-Plugin-Boillerplate
  * Dit geeft iets van een structuur die aansluit bij de wereld van Wordpress plugins
-**/
+ **/
 namespace daarso;
 
 use Throwable;
 
-function daarso_access_guard():void  {
+function daarso_access_guard(): void {
 	// If this file is called directly, abort.
 	if ( ! defined( 'ABSPATH' ) ) {
 		exit;
@@ -25,17 +27,16 @@ function daarso_access_guard():void  {
 
 daarso_access_guard();
 
-define( 'DAARSO_CONNECTOR_VERSION', '2.4.5' );
+define( 'DAARSO_CONNECTOR_VERSION', '0.1.0' );
 define( 'DAARSO_CONNECTOR_ROOT', plugin_dir_path( __FILE__ ) );
-
-function activate_daarso_plugin(): void
-{
-	require_once plugin_dir_path(__FILE__ ) . 'includes/daarso_connector_activator.php';
+define( 'DAARSO_CONNECTOR_SLUG', 'daarso-connector' );
+function activate_daarso_plugin(): void {
+	require_once plugin_dir_path( __FILE__ ) . 'includes/daarso_connector_activator.php';
 	includes\daarso_connector_activator::activate();
 }
-function uninstall_daarso_plugin(): void
-{
-	require_once plugin_dir_path(__FILE__ ) . 'includes/daarso_connector_uninstaller.php';
+
+function uninstall_daarso_plugin(): void {
+	require_once plugin_dir_path( __FILE__ ) . 'includes/daarso_connector_uninstaller.php';
 	includes\daarso_connector_uninstaller::uninstall();
 }
 

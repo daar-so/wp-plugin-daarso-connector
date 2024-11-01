@@ -1,4 +1,4 @@
-# De rgels:
+# De regels:
 # Directories beginnen met een "/" wat staat voor project root.
 # Bestandsnamen beginnen met een "-" daarna het pad vanaf "project root".
 # Voor bestanden in de project root is dat -filenaam

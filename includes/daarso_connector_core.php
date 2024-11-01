@@ -94,6 +94,7 @@ class daarso_connector_core {
 		$this->loader->add_command( 'daarso-connector api target-id', $plugin_cli, 'setRequestMessageTarget' );
 		$this->loader->add_command( 'daarso-connector api key', $plugin_cli, 'setRequestMessageOpenSslKey' );
 		$this->loader->add_command( 'daarso-connector version', $plugin_cli, 'show_version' );
+		$this->loader->add_command( 'daarso-connector update check', $plugin_cli, 'checkUpdates' );
 	}
 
 	private function define_public_hooks(): void {

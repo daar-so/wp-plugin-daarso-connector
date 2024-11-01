@@ -3,6 +3,7 @@
 namespace daarso\admin\cli;
 
 use daarso\includes\daarso_connector_options;
+use daarso\includes\daarso_connector_updater;
 use WP_CLI;
 
 final class daarso_connector_cli {
@@ -33,5 +34,9 @@ final class daarso_connector_cli {
 		] );
 
 		WP_CLI::line( sprintf( '%s, versie %s', $this->plugin_name, $this->version ) );
+	}
+
+	function checkUpdates() {
+		daarso_connector_updater::run_updater(true);
 	}
 }
