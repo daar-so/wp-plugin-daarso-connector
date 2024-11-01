@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Daar-so.nl Connector
  * Description: Een verplichte plugin voor websites die worden gehost op het Daar-so hosting platform.
- * Version: 0.1.0
+ * Version: 0.1.1
  * Requires at least: 6.0
  * Requires PHP: 8.0
  * Author: daar-so.nl®
@@ -27,7 +27,7 @@ function daarso_access_guard(): void {
 
 daarso_access_guard();
 
-define( 'DAARSO_CONNECTOR_VERSION', '0.1.0' );
+define( 'DAARSO_CONNECTOR_VERSION', '0.1.1' );
 define( 'DAARSO_CONNECTOR_ROOT', plugin_dir_path( __FILE__ ) );
 define( 'DAARSO_CONNECTOR_SLUG', 'daarso-connector' );
 function activate_daarso_plugin(): void {
