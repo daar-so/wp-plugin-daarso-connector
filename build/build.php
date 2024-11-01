@@ -38,6 +38,7 @@ class pluginBuilder {
 		// Instellingen
 		$this->projectRoot = dirname( __DIR__ );                       // Root van het project (een niveau boven de build directory)
 		$this->tempDir     = $this->projectRoot . '/build/temp';            // Tijdelijke directory
+		$this->tempPluginDir = $this->projectRoot . '/build/temp/daarso';            // Tijdelijke directory
 		$this->excludeFile = $this->projectRoot . '/build/.exclude';        // Exclude lijst
 		$this->buildsDir   = $this->projectRoot . '/build/builds';          // Directory voor het zip-bestand
 	}
@@ -46,7 +47,7 @@ class pluginBuilder {
 		$this->initialize();
 		$excludes = $this->getExcludes();
 
-		$this->copyFiles( $this->projectRoot, $this->tempDir, $excludes );
+		$this->copyFiles( $this->projectRoot, $this->tempPluginDir, $excludes );
 		$zipPath = $this->maakNaamZipBestand();
 		$this->createZip( $this->tempDir, $zipPath );
 		$this->deleteTempDir();
@@ -57,9 +58,14 @@ class pluginBuilder {
 		if ( ! is_dir( $this->tempDir ) && ! mkdir( $this->tempDir, 0777, true ) && ! is_dir( $this->tempDir ) ) {
 			throw new RuntimeException( sprintf( 'Directory "%s" kon niet worden aangemaakt', $this->tempDir ) );
 		}
+
+		if ( ! is_dir( $this->tempPluginDir ) && ! mkdir( $this->tempPluginDir, 0777, true ) && ! is_dir( $this->tempPluginDir ) ) {
+		throw new RuntimeException( sprintf( 'Directory "%s" kon niet worden aangemaakt', $this->tempPluginDir ) );
+	}
 		if ( ! is_dir( $this->buildsDir ) && ! mkdir( $this->buildsDir, 0777, true ) && ! is_dir( $this->buildsDir ) ) {
 			throw new RuntimeException( sprintf( 'Directory "%s" kon niet worden aangemaakt', $this->buildsDir ) );
 		}
+
 	}
 
 	private function getPluginInfo(): array {
