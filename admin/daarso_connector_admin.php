@@ -2,7 +2,7 @@
 
 namespace daarso\admin;
 
-readonly class daarso_connector_admin {
+class daarso_connector_admin {
 
 	/** @noinspection PhpPropertyOnlyWrittenInspection */
 	public function __construct( private string $plugin_name, private string $version ) {

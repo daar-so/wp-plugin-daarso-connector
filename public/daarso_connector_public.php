@@ -4,7 +4,7 @@ namespace daarso\public;
 
 use Throwable;
 
-readonly class daarso_connector_public {
+class daarso_connector_public {
 
 	/** @noinspection PhpPropertyOnlyWrittenInspection */
 	public function __construct( private string $plugin_name, private string $version ) {
