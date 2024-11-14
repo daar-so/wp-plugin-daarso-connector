@@ -11,3 +11,5 @@
 -.gitignore
 -composer.json
 -composer.lock
+# Voor het geval deze toch een keer met een synchronisatie meekomt en vergeten wordt om te verwijderen.
+-daarso-trace.log
