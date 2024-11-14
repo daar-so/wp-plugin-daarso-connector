@@ -29,3 +29,9 @@ Wordt vanuit daarso_connector_updater aangeroepen om te controleren of er een ni
 ## Changelog
 
 0.1.0 Omvormen daarso plugin (2.4.5) tot een platform onafhankelijke plugin.
+0.1.1 Diverse fixes naar aanleiding van testen
+0.1.2 Diverse fixes naar aanleiding van integratie testen
+0.2.0 Automatische configuratie m.b.v. Wpmanager tijdens activatie
+3.0.0 Gereserveerd voor versie die uitrolbaar is. Deze plugin vervangt de oude "daarso plugin".
+      De naam wijzigt wel, voor een goede werking van de Wordpress plugin installer moet de nieuwe versie wel
+      hoger zijn dan de oude (2.4.5) vandaar   
