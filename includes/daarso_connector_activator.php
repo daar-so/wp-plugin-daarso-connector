@@ -41,7 +41,7 @@ class daarso_connector_activator {
 		$domain = preg_replace('/^www\./', '', $parsed_url);
 
 		$options = daarso_connector_options::get_instance();
-		$url = sprintf('%s/connection-parameters/%s', $options->get_daarso_entrance_url(), urlencode($domain));
+        $url = sprintf('%s/wordpress/entrance/connection-parameters/%s', $options->get_daarso_entrance_url(), urlencode($domain));
 
 		$response = wp_remote_get( $url);
 
