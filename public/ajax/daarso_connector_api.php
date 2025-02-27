@@ -16,9 +16,6 @@ final class daarso_connector_api {
 		$protocol_version = $_POST['protocol_version'] ?? '0';
 
 		switch ( $protocol_version ) {
-			case '0':
-				$this->messsageCoder = new Daarso_Api_Message_Coder_V0();
-				break;
 			case '1':
 				$this->messsageCoder = new Daarso_Api_Message_Coder_V1();
 				break;
@@ -29,6 +26,7 @@ final class daarso_connector_api {
 
 		if ( isset( $_POST['message'] ) ) {
 			$message      = $this->messsageCoder->decode( $_POST['message'] );
+
 			if ( false !== $message ) {
 				switch ( $message['action'] ) {
 					case 'admin_sso':

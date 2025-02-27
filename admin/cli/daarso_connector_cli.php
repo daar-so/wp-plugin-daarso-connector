@@ -2,6 +2,7 @@
 
 namespace daarso\admin\cli;
 
+use daarso\includes\daarso_connector_activator;
 use daarso\includes\daarso_connector_options;
 use daarso\includes\daarso_connector_updater;
 use WP_CLI;
@@ -10,15 +11,31 @@ final class daarso_connector_cli {
 	public function __construct( private readonly string $plugin_name, private readonly string $version ) {
 	}
 
-	public function setRequestMessageOrigin( $args ): void {
+	public function resetConfiguration():void {
+		$options = daarso_connector_options::get_instance();
+		$options->reset_all_options();
+	}
+	public function resetConfigurationAndActivate():void {
+		$options = daarso_connector_options::get_instance();
+		$options->reset_connection_credentials();
+		daarso_connector_activator::activate();
+	}
+
+	public function setDaarsoEntranceUrl( $args ): void {
 		update_option(
-			daarso_connector_options::REQUEST_CONNECTOR_MESSAGE_ORIGIN_GUID, $args[0]
+			daarso_connector_options::DAARSO_ENTRANCE_URL, rtrim($args[0], '/')
 		);
 	}
 
-	public function setRequestMessageTarget( $args ): void {
+	public function setRequestMessageWebsiteId( $args ): void {
 		update_option(
-			daarso_connector_options::REQUEST_CONNECTOR_MESSAGE_TARGET_GUID, $args[0]
+			daarso_connector_options::REQUEST_CONNECTOR_MESSAGE_WEBSITE_GUID, $args[0]
+		);
+	}
+
+	public function setRequestMessageWpmanagerId( $args ): void {
+		update_option(
+			daarso_connector_options::REQUEST_CONNECTOR_MESSAGE_WPMANAGER_GUID, $args[0]
 		);
 	}
 
@@ -39,4 +56,5 @@ final class daarso_connector_cli {
 	function checkUpdates() {
 		daarso_connector_updater::run_updater(true);
 	}
+
 }

@@ -18,11 +18,7 @@ class daarso_connector_core {
 	protected string                  $version;
 
 	public function __construct() {
-		if ( defined( 'DAARSO_CONNECTOR_VERSION' ) ) {
-			$this->version = DAARSO_CONNECTOR_VERSION;
-		} else {
-			$this->version = '1.0.0';
-		}
+		$this->version = DAARSO_CONNECTOR_VERSION;
 		$this->plugin_name = 'daarso_connector_core';
 
 		$this->load_dependencies();
@@ -35,10 +31,23 @@ class daarso_connector_core {
 	private function load_dependencies(): void {
 		$plugin_folder = $this->get_current_parent_directory();
 
+		// Symbiose: externe component die het verder zelf regelt.
 		require_once ($plugin_folder . 'plugin-update-checker/plugin-update-checker.php');
-		$this->includeRecursively( $plugin_folder . 'includes/*.php' );
-		$this->includeRecursively( $plugin_folder . 'admin/*.php' );
-		$this->includeRecursively( $plugin_folder . 'public/*.php' );
+
+		spl_autoload_register(function ($class) use ($plugin_folder) {
+			// Controleer of het een namespace bevat die binnen jouw plugin valt
+			if ( str_starts_with( $class, 'daarso\\' ) ) {
+				$relative_class = str_replace('\\', '/', substr($class, strlen('daarso\\')));
+				$file = $plugin_folder . $relative_class . '.php';
+
+				if (file_exists($file)) {
+					require_once $file;
+				} else {
+					/** @noinspection ForgottenDebugOutputInspection */
+					error_log( "Autoload kon het bestand niet vinden voor klasse of interface: $class. Verwacht bestand: $file");
+				}
+			}
+		});
 
 
 		$this->loader = new daarso_connector_loader();
@@ -60,17 +69,6 @@ class daarso_connector_core {
 
 	}
 
-	private function includeRecursively( $pattern ): void {
-		$files = glob( $pattern );
-		foreach ( $files as $file ) {
-			require_once( $file );
-		}
-
-		foreach ( glob( dirname( $pattern ) . '/*', GLOB_ONLYDIR | GLOB_NOSORT ) as $dir ) {
-			self::includeRecursively( $dir . '/' . basename( $pattern ) );
-		}
-	}
-
 	private function define_ajax_hooks(): void {
 		$plugin_ajax = new daarso_connector_api( $this->get_plugin_name(), $this->get_version() );
 
@@ -90,11 +88,14 @@ class daarso_connector_core {
 
 	private function define_cli_commands(): void {
 		$plugin_cli = new daarso_connector_cli( $this->get_plugin_name(), $this->get_version() );
-		$this->loader->add_command( 'daarso-connector api origin-id', $plugin_cli, 'setRequestMessageOrigin' );
-		$this->loader->add_command( 'daarso-connector api target-id', $plugin_cli, 'setRequestMessageTarget' );
-		$this->loader->add_command( 'daarso-connector api key', $plugin_cli, 'setRequestMessageOpenSslKey' );
-		$this->loader->add_command( 'daarso-connector version', $plugin_cli, 'show_version' );
-		$this->loader->add_command( 'daarso-connector update check', $plugin_cli, 'checkUpdates' );
+		$this->loader->add_command( 'daarso api origin-id', $plugin_cli, 'setRequestMessageWebsiteId' );
+		$this->loader->add_command( 'daarso api target-id', $plugin_cli, 'setRequestMessageWpmanagerId' );
+		$this->loader->add_command( 'daarso api key', $plugin_cli, 'setRequestMessageOpenSslKey' );
+		$this->loader->add_command( 'daarso version', $plugin_cli, 'show_version' );
+		$this->loader->add_command( 'daarso update check', $plugin_cli, 'checkUpdates' );
+		$this->loader->add_command( 'daarso config reset', $plugin_cli, 'resetConfiguration' );
+		$this->loader->add_command( 'daarso config renew connection', $plugin_cli, 'resetConfigurationAndActivate' );
+		$this->loader->add_command( 'daarso config set entrance url', $plugin_cli,'setDaarsoEntranceUrl');
 	}
 
 	private function define_public_hooks(): void {
