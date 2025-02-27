@@ -27,7 +27,7 @@ function daarso_access_guard(): void {
 
 daarso_access_guard();
 
-define( 'DAARSO_CONNECTOR_VERSION', '0.1.3' );
+define( 'DAARSO_CONNECTOR_VERSION', '3.0.1' );
 define( 'DAARSO_CONNECTOR_ROOT', plugin_dir_path( __FILE__ ) );
 define( 'DAARSO_CONNECTOR_SLUG', 'daarso-connector' );
 function activate_daarso_plugin(): void {
