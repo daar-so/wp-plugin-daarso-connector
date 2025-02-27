@@ -20,6 +20,18 @@ Direct daarna volgt de kickstart. De functie die de kern van de plugin instantie
 De kern wordt gevormd door de class daarso_connector_core.
 De core laadt de overige php bestanden in en registreert alle hooks en commands. Dan is de plugin klaar voor gebruik.
 
+## WP-CLI Commands ##
+| Commando | Doel                                                                               |
+| --- |------------------------------------------------------------------------------------|
+| daarso api origin-id | Voeg de Guid-id die de website indentificeerd in Wp-manager                        |
+| daarso api target-id | Voeg de Guid-id die de Wp-manager indentificeerd bij deze website                  |
+| daarso api key | Voeg public Ssh key toe                                                            |
+| daarso version | Versie van deze plugin                                                             |
+| daarso update check | Handmatig controleren nieuwe update                                                |
+| daarso config reset | Herstel de configuratie naar "factory instellingen"                                |
+| daarso config renew connection | Vernieuw de connectoe gegevens (beide Guid-is en key                               |
+| daarso config set entrance url | Voer de nieuwe url (root domein) toe waar de plugin zijn configuratie kan ophalen |
+
 ## Plugin Update Checker
 Auteur: Yahnis Elsts (https://github.com/YahnisElsts/plugin-update-checker.git)
 
